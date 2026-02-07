@@ -1,0 +1,27 @@
+# RAG Multimodal Application Configuration
+
+# Model Configuration
+model:
+  text_generation: "llama3.1:8b"
+  vision_model: "gemma3:4b"
+  embeddings: "sentence-transformers/all-mpnet-base-v2"
+  tokenizer: "sentence-transformers/all-mpnet-base-v2"
+  url: "http://localhost:11434" # provide the IP where ollama running
+  vision_url: "http://localhost:11434/v1/chat/completions"
+  timeout: 1800
+
+# Docling Document Processing
+document:
+  image_resolution_scale: 2 # Scale factor for image resolution in document processing
+  max_tokens: 512 # Maximum number of tokens for chunking
+  doc_dir: "doc_sources" # Directory containing document sources
+  supported_file_types: [".pdf"] # List of supported file extensions
+  picture_description:
+    prompt_picture_description: "Describe the image in one paragraph with detailed analysis."
+
+# Vector Database Configuration
+database:
+  uri: "http://localhost:19530" # Milvus database URI
+  name: "ragMultimodal" # Database name
+  collection_name: "collectionDemo" # Collection name
+  namespace: "ragDemo2" # Namespace for partitioning data

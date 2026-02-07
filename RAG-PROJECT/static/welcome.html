@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG System - Setup Complete</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .success-icon {
+            font-size: 60px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .step {
+            background: #f7fafc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .command {
+            background: #2d3748;
+            color: #68d391;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 10px 10px 10px 0;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .note {
+            background: #fff5e1;
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>RAG System Web UI - Ready!</h1>
+        <p style="color: #718096; font-size: 18px;">Your intelligent document Q&A system is set up and ready to use.</p>
+        
+        <div class="step">
+            <h3>🚀 Quick Start</h3>
+            <p>Run the following command to start the web server:</p>
+            <div class="command">./quick_start.sh</div>
+            <p>Or manually:</p>
+            <div class="command">uv run uvicorn web_app:app --reload --port 8080</div>
+        </div>
+
+        <div class="step">
+            <h3>🌟 Features</h3>
+            <div class="feature">
+                <span class="feature-icon">💬</span>
+                <div>
+                    <strong>Chat Interface</strong><br>
+                    Ask questions and get AI-powered answers with source citations
+                </div>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📚</span>
+                <div>
+                    <strong>Document Indexing</strong><br>
+                    Drag and drop files to index them into your knowledge base
+                </div>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔍</span>
+                <div>
+                    <strong>Hybrid Search</strong><br>
+                    BM25 + Semantic search with optional reranking
+                </div>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⚙️</span>
+                <div>
+                    <strong>Settings</strong><br>
+                    Customize search, theme, and view system health
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📁 Project Structure</h3>
+            <div class="command" style="background: #f7fafc; color: #2d3748; font-size: 13px;">
+web_app.py          - FastAPI backend server<br>
+static/<br>
+  ├── index.html    - Web UI interface<br>
+  ├── styles.css    - Modern styling<br>
+  └── app.js        - Frontend functionality<br>
+rag_qa_system_enhanced.py  - Q&A system<br>
+index.py            - Document indexing<br>
+src/<br>
+  ├── hybrid_search.py  - Search implementation<br>
+  ├── milvus_store.py   - Vector database<br>
+  └── config.py         - Configuration
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>⚠️ Before You Start:</strong><br>
+            • Ensure Milvus is running (default: localhost:19530)<br>
+            • Ensure Ollama server is accessible (configured in config.yaml)<br>
+            • Your existing collection has 87 documents already indexed
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="http://localhost:8080" class="btn">Open Web UI</a>
+            <a href="WEB_UI_README.md" class="btn" style="background: #48bb78;">Read Documentation</a>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid #e2e8f0; text-align: center; color: #718096;">
+            <p>Built with FastAPI, Milvus, Ollama, and ❤️</p>
+        </div>
+    </div>
+</body>
+</html>

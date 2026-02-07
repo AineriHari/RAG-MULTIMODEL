@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG System - Document Q&A</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>RAG System</span>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-page="chat">
+                    <i class="fas fa-comments"></i> Chat
+                </button>
+                <button class="nav-btn" data-page="index">
+                    <i class="fas fa-file-upload"></i> Index
+                </button>
+                <button class="nav-btn" data-page="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Chat Page -->
+        <div class="page active" id="chat-page">
+            <div class="container">
+                <div class="chat-container">
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <h2>Ask Questions</h2>
+                        <div class="search-options">
+                            <select id="search-type" class="select-input">
+                                <option value="hybrid">🔀 Hybrid Search</option>
+                                <option value="semantic">🧠 Semantic Search</option>
+                                <option value="bm25">📊 BM25 Search</option>
+                            </select>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="use-reranker">
+                                <span>Use Reranker</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="welcome-message">
+                            <div class="welcome-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>Welcome to RAG System!</h3>
+                            <p>Ask me anything about your indexed documents.</p>
+                            <div class="example-questions">
+                                <p>Try asking:</p>
+                                <button class="example-btn" data-query="What is the main topic?">
+                                    What is the main topic?
+                                </button>
+                                <button class="example-btn" data-query="Can you summarize the key points?">
+                                    Can you summarize the key points?
+                                </button>
+                                <button class="example-btn" data-query="What are the important findings?">
+                                    What are the important findings?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-container">
+                        <div class="chat-input">
+                            <textarea 
+                                id="user-input" 
+                                placeholder="Type your question here..." 
+                                rows="1"
+                            ></textarea>
+                            <button id="send-btn" class="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Index Page -->
+        <div class="page" id="index-page">
+            <div class="container">
+                <div class="index-container">
+                    <h2>Document Indexing</h2>
+                    <p class="subtitle">Upload and index your documents for question answering</p>
+
+                    <!-- Upload Section -->
+                    <div class="card">
+                        <h3><i class="fas fa-upload"></i> Upload Documents</h3>
+                        <div class="upload-area" id="upload-area">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p>Drag and drop files here or click to browse</p>
+                            <input type="file" id="file-input" multiple accept=".pdf,.txt,.doc,.docx">
+                            <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                                <i class="fas fa-folder-open"></i> Choose Files
+                            </button>
+                        </div>
+                        <div id="file-list" class="file-list"></div>
+                    </div>
+
+                    <!-- Index Settings -->
+                    <div class="card">
+                        <h3><i class="fas fa-cog"></i> Indexing Settings</h3>
+                        <div class="form-group">
+                            <label for="collection-name">Collection Name</label>
+                            <input 
+                                type="text" 
+                                id="collection-name" 
+                                class="input" 
+                                value="collectionDemo"
+                                placeholder="Enter collection name"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="drop-existing">
+                                <span>Drop existing collection</span>
+                            </label>
+                            <p class="help-text">⚠️ This will delete all existing documents in the collection</p>
+                        </div>
+                        <button id="start-index-btn" class="btn btn-success btn-large">
+                            <i class="fas fa-play"></i> Start Indexing
+                        </button>
+                    </div>
+
+                    <!-- Indexing Status -->
+                    <div class="card" id="status-card" style="display: none;">
+                        <h3><i class="fas fa-info-circle"></i> Indexing Status</h3>
+                        <div class="status-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <p id="status-message" class="status-message"></p>
+                        </div>
+                    </div>
+
+                    <!-- Collections -->
+                    <div class="card">
+                        <h3><i class="fas fa-database"></i> Available Collections</h3>
+                        <button id="refresh-collections-btn" type="button" class="nav-btn" style="margin-bottom: 1rem;">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <div id="collections-list" class="collections-list">
+                            <p class="loading">Loading collections...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings-page">
+            <div class="container">
+                <div class="settings-container">
+                    <h2>Settings</h2>
+                    <p class="subtitle">Configure your RAG system</p>
+
+                    <div class="card">
+                        <h3><i class="fas fa-search"></i> Search Settings</h3>
+                        <div class="form-group">
+                            <label for="default-search-type">Default Search Type</label>
+                            <select id="default-search-type" class="input">
+                                <option value="hybrid">Hybrid (BM25 + Semantic)</option>
+                                <option value="semantic">Semantic Only</option>
+                                <option value="bm25">BM25 Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="top-k">Number of Results (Top K)</label>
+                            <input type="number" id="top-k" class="input" value="5" min="1" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="default-reranker">
+                                <span>Enable Reranker by default</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <div class="theme-options">
+                                <button class="theme-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Dark
+                                </button>
+                                <button class="theme-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Light
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-info-circle"></i> System Info</h3>
+                        <div id="system-info" class="system-info">
+                            <p>Loading system information...</p>
+                        </div>
+                    </div>
+
+                    <button id="save-settings-btn" class="btn btn-primary btn-large">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 RAG System. Powered by Milvus, Ollama, and Hybrid Search</p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
