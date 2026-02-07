@@ -74,7 +74,13 @@ uv run uvicorn web_app:app --reload --host 0.0.0.0 --port 8080
 
 Open your browser to **http://localhost:8080**
 
-### Option 2: Python API
+### Option 2: Custome Document Index
+
+Upload the documents to input_files folder.
+
+```uv run custom_document_index.py```
+
+### Option 3: Python API
 
 ```python
 from src.milvus_store import MilvusStore
