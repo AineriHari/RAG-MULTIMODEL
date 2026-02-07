@@ -48,7 +48,7 @@ A modern, production-ready Retrieval-Augmented Generation (RAG) system featuring
 - Python 3.12+
 - [uv](https://github.com/astral-sh/uv) package manager
 - Milvus vector database
-- Ollama server with llama3.1:8b and gemma3:4b model
+- Ollama server with llama3.1:8b and gemma3:4b model (Models can be changed depending on your hardware capability)
 
 ### Install Dependencies
 
